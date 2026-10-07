@@ -38,7 +38,71 @@ def _extract_json(text: str) -> dict[str, Any]:
     end = text.rfind("}")
     if start == -1 or end == -1:
         raise ValueError(f"No JSON object found in model response: {text[:400]}")
-    return json.loads(text[start : end + 1])
+    data = json.loads(text[start : end + 1])
+    if not isinstance(data, dict):
+        raise ValueError(f"Expected JSON object, got {type(data).__name__}")
+    return data
+
+
+def _sanitize_carbon_node(node: Any) -> dict[str, Any] | None:
+    """Drop non-object children / malformed nodes from LLM trees."""
+    if not isinstance(node, dict):
+        return None
+    node_type = node.get("type")
+    if not isinstance(node_type, str) or not node_type:
+        return None
+    props = node.get("props") if isinstance(node.get("props"), dict) else {}
+    raw_children = node.get("children", [])
+    if not isinstance(raw_children, list):
+        raw_children = []
+    children: list[dict[str, Any]] = []
+    for child in raw_children:
+        cleaned = _sanitize_carbon_node(child)
+        if cleaned is not None:
+            children.append(cleaned)
+    return {"type": node_type, "props": props, "children": children}
+
+
+def _sanitize_document_tree(data: dict[str, Any]) -> dict[str, Any]:
+    doc = data.get("document")
+    if not isinstance(doc, dict):
+        return data
+    # Model returned a bare CarbonNode as document
+    if "root" not in doc and "type" in doc:
+        root = _sanitize_carbon_node(doc)
+        if root is not None:
+            data = {**data, "document": {"id": str(data.get("id") or "generated"), "root": root}}
+        return data
+    if "root" in doc:
+        root = _sanitize_carbon_node(doc.get("root"))
+        if root is not None:
+            data = {
+                **data,
+                "document": {
+                    "id": str(doc.get("id") or data.get("id") or "generated"),
+                    "root": root,
+                },
+            }
+    return data
+
+
+def _coerce_schema_payload(data: dict[str, Any], schema: type[BaseModel]) -> dict[str, Any]:
+    """Normalize common LLM wrapping mistakes before Pydantic validation."""
+    name = schema.__name__
+    if set(data.keys()) == {name} and isinstance(data[name], dict):
+        data = data[name]
+
+    fields = getattr(schema, "model_fields", {})
+    if "document" in fields and "document" not in data and "id" in data and "root" in data:
+        extras = {k: v for k, v in data.items() if k not in {"id", "root"}}
+        data = {"document": {"id": data["id"], "root": data["root"]}, **extras}
+    if "document" in fields:
+        data = _sanitize_document_tree(data)
+    return data
+
+
+def _validate_structured(data: dict[str, Any], schema: type[T]) -> T:
+    return schema.model_validate(_coerce_schema_payload(data, schema))
 
 
 class MistralClient:
@@ -49,9 +113,9 @@ class MistralClient:
 
     def _get_client(self) -> Any:
         if self._client is None:
-            from mistralai import Mistral
+            from mistralai.client import Mistral
 
-            api_key = os.getenv("MISTRAL_API_KEY")
+            api_key = (os.getenv("MISTRAL_API_KEY") or "").strip().strip("\"'")
             if not api_key:
                 raise RuntimeError("MISTRAL_API_KEY is not set")
             self._client = Mistral(api_key=api_key)
@@ -82,13 +146,26 @@ class MistralClient:
         )
 
     def structured(self, system: str, user: str, schema: type[T]) -> tuple[T, LLMUsage]:
-        usage = self.complete(
-            system
-            + "\n\nRespond with a single JSON object that matches the required schema. No markdown.",
-            user,
+        instruction = (
+            "\n\nRespond with a single JSON object whose top-level keys are the schema "
+            f"fields for {schema.__name__} (not the class name itself). "
+            "CarbonNode children must be arrays of objects with type/props/children only. "
+            "No markdown."
         )
-        data = _extract_json(usage.raw_text)
-        return schema.model_validate(data), usage
+        usage = self.complete(system + instruction, user)
+        try:
+            return _validate_structured(_extract_json(usage.raw_text), schema), usage
+        except Exception as first_err:
+            retry_user = (
+                f"{user}\n\nYour previous JSON failed validation:\n{first_err}\n"
+                "Return corrected JSON only."
+            )
+            usage2 = self.complete(system + instruction, retry_user)
+            usage2.prompt_tokens += usage.prompt_tokens
+            usage2.completion_tokens += usage.completion_tokens
+            usage2.total_tokens += usage.total_tokens
+            usage2.latency_seconds += usage.latency_seconds
+            return _validate_structured(_extract_json(usage2.raw_text), schema), usage2
 
 
 class OpenAIClient:
@@ -132,13 +209,26 @@ class OpenAIClient:
         )
 
     def structured(self, system: str, user: str, schema: type[T]) -> tuple[T, LLMUsage]:
-        usage = self.complete(
-            system
-            + "\n\nRespond with a single JSON object that matches the required schema. No markdown.",
-            user,
+        instruction = (
+            "\n\nRespond with a single JSON object whose top-level keys are the schema "
+            f"fields for {schema.__name__} (not the class name itself). "
+            "CarbonNode children must be arrays of objects with type/props/children only. "
+            "No markdown."
         )
-        data = _extract_json(usage.raw_text)
-        return schema.model_validate(data), usage
+        usage = self.complete(system + instruction, user)
+        try:
+            return _validate_structured(_extract_json(usage.raw_text), schema), usage
+        except Exception as first_err:
+            retry_user = (
+                f"{user}\n\nYour previous JSON failed validation:\n{first_err}\n"
+                "Return corrected JSON only."
+            )
+            usage2 = self.complete(system + instruction, retry_user)
+            usage2.prompt_tokens += usage.prompt_tokens
+            usage2.completion_tokens += usage.completion_tokens
+            usage2.total_tokens += usage.total_tokens
+            usage2.latency_seconds += usage.latency_seconds
+            return _validate_structured(_extract_json(usage2.raw_text), schema), usage2
 
 
 @dataclass
@@ -147,4 +237,6 @@ class NullClient:
     canned: dict[str, Any] = field(default_factory=dict)
 
     def structured(self, system: str, user: str, schema: type[T]) -> tuple[T, LLMUsage]:
-        return schema.model_validate(self.canned), LLMUsage(model=self.model, latency_seconds=0.0)
+        return _validate_structured(self.canned, schema), LLMUsage(
+            model=self.model, latency_seconds=0.0
+        )
