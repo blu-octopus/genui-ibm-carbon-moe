@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -27,6 +28,15 @@ from src.utils import RESULTS_DIR, load_ground_truth, load_prompts
 def _ensure_results() -> Path:
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     return RESULTS_DIR
+
+
+def _model_slug(model: str | None) -> str:
+    raw = (model or "unknown").strip() or "unknown"
+    return re.sub(r"[^A-Za-z0-9._-]+", "-", raw)
+
+
+def _result_path(system: str, prompt_id: str, model: str | None) -> Path:
+    return _ensure_results() / f"{system}_{_model_slug(model)}_{prompt_id}.json"
 
 
 def cmd_synthesize_ground_truth(_: argparse.Namespace) -> None:
@@ -88,7 +98,7 @@ def cmd_run_moe(args: argparse.Namespace) -> None:
         result = out.model_dump()
         result["system"] = "moe_mistral"
 
-    out_path = _ensure_results() / f"{result['system']}_{args.prompt_id}.json"
+    out_path = _result_path(result["system"], args.prompt_id, result.get("model"))
     out_path.write_text(json.dumps(result, indent=2), encoding="utf-8")
     print(f"wrote {out_path}")
 
@@ -99,7 +109,7 @@ def cmd_run_baseline(args: argparse.Namespace) -> None:
         result = run_mistral_baseline(prompt["id"], prompt["text"])
     else:
         result = run_gpt4o_baseline(prompt["id"], prompt["text"])
-    out_path = _ensure_results() / f"{result['system']}_{args.prompt_id}.json"
+    out_path = _result_path(result["system"], args.prompt_id, result.get("model"))
     out_path.write_text(json.dumps(result, indent=2), encoding="utf-8")
     print(f"wrote {out_path}")
 
