@@ -1,0 +1,29 @@
+{
+  "prompts": [
+    {
+      "id": "prompt_01_travel_dashboard",
+      "title": "Travel comparison dashboard",
+      "text": "Create a responsive travel comparison dashboard with a date picker, metric cards summarizing price and duration, and a filterable data table of flight options. Use only IBM Carbon components and design tokens. Support desktop and mobile breakpoints."
+    },
+    {
+      "id": "prompt_02_inventory_table",
+      "title": "Enterprise inventory table",
+      "text": "Generate a data-dense inventory table with pagination, batch actions, and status tag badges for stock state. Use only IBM Carbon DataTable patterns and tokens. Keep the layout usable at 1440px and 375px."
+    },
+    {
+      "id": "prompt_03_registration_form",
+      "title": "Multi-step registration form",
+      "text": "Build a multi-step user registration form with validation feedback, inline tooltips, and primary/secondary button controls. Use IBM Carbon Form, ProgressIndicator, TextInput, and Button. No custom CSS colors or pixel spacing."
+    },
+    {
+      "id": "prompt_04_kpi_grid",
+      "title": "Executive KPI card grid",
+      "text": "Design an executive KPI card grid with trend indicators, dropdown filters, and accessible icon labels. Use Carbon Tile, Tag, Dropdown, and Grid/Column responsive props only."
+    },
+    {
+      "id": "prompt_05_destructive_modal",
+      "title": "Destructive confirmation modal",
+      "text": "Synthesize a destructive action confirmation modal with clear messaging, a warning callout/notification, and focus-trapped primary danger and secondary cancel actions. Use IBM Carbon Modal and InlineNotification only—no hallucinated styles."
+    }
+  ]
+}

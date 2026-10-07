@@ -1,0 +1,126 @@
+{
+  "id": "prompt_02_inventory_table",
+  "root": {
+    "type": "Grid",
+    "props": {
+      "fullWidth": true,
+      "ariaLabel": "Inventory management"
+    },
+    "children": [
+      {
+        "type": "Column",
+        "props": {
+          "sm": 4,
+          "md": 8,
+          "lg": 16
+        },
+        "children": [
+          {
+            "type": "Stack",
+            "props": {
+              "gap": 5
+            },
+            "children": [
+              {
+                "type": "Heading",
+                "props": {
+                  "token": "$heading-03",
+                  "text": "Inventory"
+                },
+                "children": []
+              },
+              {
+                "type": "DataTable",
+                "props": {
+                  "ariaLabel": "Inventory table with batch actions",
+                  "useZebraStyles": true,
+                  "headers": [
+                    {
+                      "key": "sku",
+                      "header": "SKU"
+                    },
+                    {
+                      "key": "name",
+                      "header": "Item"
+                    },
+                    {
+                      "key": "qty",
+                      "header": "Qty"
+                    },
+                    {
+                      "key": "status",
+                      "header": "Status"
+                    }
+                  ],
+                  "rows": [
+                    {
+                      "id": "i1",
+                      "sku": "SKU-100",
+                      "name": "Sensor Kit",
+                      "qty": "42",
+                      "status": "In stock"
+                    },
+                    {
+                      "id": "i2",
+                      "sku": "SKU-220",
+                      "name": "Cable Pack",
+                      "qty": "8",
+                      "status": "Low"
+                    },
+                    {
+                      "id": "i3",
+                      "sku": "SKU-318",
+                      "name": "Mount Plate",
+                      "qty": "0",
+                      "status": "Backorder"
+                    }
+                  ],
+                  "batchActions": [
+                    {
+                      "label": "Export",
+                      "kind": "primary"
+                    },
+                    {
+                      "label": "Archive",
+                      "kind": "danger--ghost"
+                    }
+                  ],
+                  "rowTags": {
+                    "i1": {
+                      "type": "green",
+                      "text": "In stock"
+                    },
+                    "i2": {
+                      "type": "warm-gray",
+                      "text": "Low"
+                    },
+                    "i3": {
+                      "type": "red",
+                      "text": "Backorder"
+                    }
+                  }
+                },
+                "children": []
+              },
+              {
+                "type": "Pagination",
+                "props": {
+                  "page": 1,
+                  "pageSize": 10,
+                  "totalItems": 3,
+                  "pageSizes": [
+                    10,
+                    20,
+                    50
+                  ],
+                  "ariaLabel": "Inventory pagination"
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

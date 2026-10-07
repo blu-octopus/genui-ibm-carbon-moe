@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.env
+.DS_Store
+node_modules/
+frontend/.next/
+frontend/playwright-report/
+frontend/test-results/
+data/results/*
+!data/results/.gitkeep
+dist/
+*.egg-info/
+.mypy_cache/
+genui_ibm_carbon_moe.egg-info/

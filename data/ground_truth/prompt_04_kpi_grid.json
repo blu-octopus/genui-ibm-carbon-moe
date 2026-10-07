@@ -1,0 +1,274 @@
+{
+  "id": "prompt_04_kpi_grid",
+  "root": {
+    "type": "Grid",
+    "props": {
+      "fullWidth": true,
+      "ariaLabel": "Executive KPI overview"
+    },
+    "children": [
+      {
+        "type": "Column",
+        "props": {
+          "sm": 4,
+          "md": 8,
+          "lg": 16
+        },
+        "children": [
+          {
+            "type": "Stack",
+            "props": {
+              "gap": 5
+            },
+            "children": [
+              {
+                "type": "Stack",
+                "props": {
+                  "gap": 4,
+                  "orientation": "horizontal"
+                },
+                "children": [
+                  {
+                    "type": "Heading",
+                    "props": {
+                      "token": "$heading-03",
+                      "text": "Executive KPIs"
+                    },
+                    "children": []
+                  },
+                  {
+                    "type": "Dropdown",
+                    "props": {
+                      "id": "kpi-range",
+                      "titleText": "Time range",
+                      "label": "Last 30 days",
+                      "items": [
+                        "Last 7 days",
+                        "Last 30 days",
+                        "Quarter to date"
+                      ],
+                      "ariaLabel": "Filter KPI time range"
+                    },
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "type": "Grid",
+                "props": {
+                  "narrow": true
+                },
+                "children": [
+                  {
+                    "type": "Column",
+                    "props": {
+                      "sm": 4,
+                      "md": 4,
+                      "lg": 4
+                    },
+                    "children": [
+                      {
+                        "type": "Tile",
+                        "props": {
+                          "ariaLabel": "Revenue KPI"
+                        },
+                        "children": [
+                          {
+                            "type": "Stack",
+                            "props": {
+                              "gap": 3
+                            },
+                            "children": [
+                              {
+                                "type": "Heading",
+                                "props": {
+                                  "token": "$label-01",
+                                  "text": "Revenue"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "Heading",
+                                "props": {
+                                  "token": "$heading-05",
+                                  "text": "$2.4M"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "Tag",
+                                "props": {
+                                  "type": "green",
+                                  "text": "Up 12%",
+                                  "ariaLabel": "Revenue up twelve percent"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Column",
+                    "props": {
+                      "sm": 4,
+                      "md": 4,
+                      "lg": 4
+                    },
+                    "children": [
+                      {
+                        "type": "Tile",
+                        "props": {
+                          "ariaLabel": "Active users KPI"
+                        },
+                        "children": [
+                          {
+                            "type": "Stack",
+                            "props": {
+                              "gap": 3
+                            },
+                            "children": [
+                              {
+                                "type": "Heading",
+                                "props": {
+                                  "token": "$label-01",
+                                  "text": "Active users"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "Heading",
+                                "props": {
+                                  "token": "$heading-05",
+                                  "text": "18.2k"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "Tag",
+                                "props": {
+                                  "type": "blue",
+                                  "text": "Up 4%",
+                                  "ariaLabel": "Active users up four percent"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Column",
+                    "props": {
+                      "sm": 4,
+                      "md": 4,
+                      "lg": 4
+                    },
+                    "children": [
+                      {
+                        "type": "Tile",
+                        "props": {
+                          "ariaLabel": "Conversion KPI"
+                        },
+                        "children": [
+                          {
+                            "type": "Stack",
+                            "props": {
+                              "gap": 3
+                            },
+                            "children": [
+                              {
+                                "type": "Heading",
+                                "props": {
+                                  "token": "$label-01",
+                                  "text": "Conversion"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "Heading",
+                                "props": {
+                                  "token": "$heading-05",
+                                  "text": "3.1%"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "Tag",
+                                "props": {
+                                  "type": "red",
+                                  "text": "Down 1%",
+                                  "ariaLabel": "Conversion down one percent"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Column",
+                    "props": {
+                      "sm": 4,
+                      "md": 4,
+                      "lg": 4
+                    },
+                    "children": [
+                      {
+                        "type": "Tile",
+                        "props": {
+                          "ariaLabel": "NPS KPI"
+                        },
+                        "children": [
+                          {
+                            "type": "Stack",
+                            "props": {
+                              "gap": 3
+                            },
+                            "children": [
+                              {
+                                "type": "Heading",
+                                "props": {
+                                  "token": "$label-01",
+                                  "text": "NPS"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "Heading",
+                                "props": {
+                                  "token": "$heading-05",
+                                  "text": "62"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "Tag",
+                                "props": {
+                                  "type": "teal",
+                                  "text": "Stable",
+                                  "ariaLabel": "NPS stable"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

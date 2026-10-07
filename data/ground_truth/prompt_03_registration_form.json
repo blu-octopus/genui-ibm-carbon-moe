@@ -1,0 +1,152 @@
+{
+  "id": "prompt_03_registration_form",
+  "root": {
+    "type": "Grid",
+    "props": {
+      "fullWidth": false,
+      "ariaLabel": "User registration"
+    },
+    "children": [
+      {
+        "type": "Column",
+        "props": {
+          "sm": 4,
+          "md": 6,
+          "lg": 8
+        },
+        "children": [
+          {
+            "type": "Stack",
+            "props": {
+              "gap": 6
+            },
+            "children": [
+              {
+                "type": "Heading",
+                "props": {
+                  "token": "$heading-03",
+                  "text": "Create account"
+                },
+                "children": []
+              },
+              {
+                "type": "ProgressIndicator",
+                "props": {
+                  "currentIndex": 0,
+                  "spaceEqually": true,
+                  "ariaLabel": "Registration steps"
+                },
+                "children": [
+                  {
+                    "type": "ProgressStep",
+                    "props": {
+                      "label": "Profile",
+                      "description": "Name and email",
+                      "complete": false,
+                      "current": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "type": "ProgressStep",
+                    "props": {
+                      "label": "Security",
+                      "description": "Password",
+                      "complete": false,
+                      "current": false
+                    },
+                    "children": []
+                  },
+                  {
+                    "type": "ProgressStep",
+                    "props": {
+                      "label": "Confirm",
+                      "description": "Review details",
+                      "complete": false,
+                      "current": false
+                    },
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "type": "Form",
+                "props": {
+                  "ariaLabel": "Registration profile step"
+                },
+                "children": [
+                  {
+                    "type": "FormGroup",
+                    "props": {
+                      "legendText": "Profile"
+                    },
+                    "children": [
+                      {
+                        "type": "TextInput",
+                        "props": {
+                          "id": "full-name",
+                          "labelText": "Full name",
+                          "placeholder": "Ada Lovelace",
+                          "invalid": false,
+                          "invalidText": "Enter your full name",
+                          "helperText": "As shown on your ID"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "TextInput",
+                        "props": {
+                          "id": "email",
+                          "labelText": "Email",
+                          "placeholder": "ada@example.com",
+                          "invalid": false,
+                          "invalidText": "Enter a valid email",
+                          "helperText": "We will send a verification link"
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "Tooltip",
+                        "props": {
+                          "label": "Why we need this",
+                          "description": "Email is used for account recovery and security alerts."
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Stack",
+                    "props": {
+                      "gap": 4,
+                      "orientation": "horizontal"
+                    },
+                    "children": [
+                      {
+                        "type": "Button",
+                        "props": {
+                          "kind": "secondary",
+                          "text": "Back",
+                          "disabled": true
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "Button",
+                        "props": {
+                          "kind": "primary",
+                          "text": "Continue"
+                        },
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

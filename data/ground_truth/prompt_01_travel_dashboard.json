@@ -1,0 +1,274 @@
+{
+  "id": "prompt_01_travel_dashboard",
+  "root": {
+    "type": "Grid",
+    "props": {
+      "fullWidth": true,
+      "ariaLabel": "Travel comparison dashboard"
+    },
+    "children": [
+      {
+        "type": "Column",
+        "props": {
+          "sm": 4,
+          "md": 8,
+          "lg": 16
+        },
+        "children": [
+          {
+            "type": "Stack",
+            "props": {
+              "gap": 7
+            },
+            "children": [
+              {
+                "type": "Heading",
+                "props": {
+                  "token": "$heading-03",
+                  "text": "Travel comparison"
+                },
+                "children": []
+              },
+              {
+                "type": "DatePicker",
+                "props": {
+                  "datePickerType": "range",
+                  "ariaLabel": "Travel date range"
+                },
+                "children": [
+                  {
+                    "type": "DatePickerInput",
+                    "props": {
+                      "id": "travel-start",
+                      "labelText": "Departure",
+                      "placeholder": "mm/dd/yyyy"
+                    },
+                    "children": []
+                  },
+                  {
+                    "type": "DatePickerInput",
+                    "props": {
+                      "id": "travel-end",
+                      "labelText": "Return",
+                      "placeholder": "mm/dd/yyyy"
+                    },
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "type": "Grid",
+                "props": {
+                  "narrow": true
+                },
+                "children": [
+                  {
+                    "type": "Column",
+                    "props": {
+                      "sm": 4,
+                      "md": 4,
+                      "lg": 5
+                    },
+                    "children": [
+                      {
+                        "type": "Tile",
+                        "props": {
+                          "ariaLabel": "Average price metric"
+                        },
+                        "children": [
+                          {
+                            "type": "Stack",
+                            "props": {
+                              "gap": 3
+                            },
+                            "children": [
+                              {
+                                "type": "Heading",
+                                "props": {
+                                  "token": "$label-01",
+                                  "text": "Avg price"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "Heading",
+                                "props": {
+                                  "token": "$heading-04",
+                                  "text": "$412"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "Tag",
+                                "props": {
+                                  "type": "green",
+                                  "text": "Down 8%"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Column",
+                    "props": {
+                      "sm": 4,
+                      "md": 4,
+                      "lg": 5
+                    },
+                    "children": [
+                      {
+                        "type": "Tile",
+                        "props": {
+                          "ariaLabel": "Average duration metric"
+                        },
+                        "children": [
+                          {
+                            "type": "Stack",
+                            "props": {
+                              "gap": 3
+                            },
+                            "children": [
+                              {
+                                "type": "Heading",
+                                "props": {
+                                  "token": "$label-01",
+                                  "text": "Avg duration"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "Heading",
+                                "props": {
+                                  "token": "$heading-04",
+                                  "text": "6h 20m"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "Tag",
+                                "props": {
+                                  "type": "blue",
+                                  "text": "Direct preferred"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Column",
+                    "props": {
+                      "sm": 4,
+                      "md": 8,
+                      "lg": 6
+                    },
+                    "children": [
+                      {
+                        "type": "Tile",
+                        "props": {
+                          "ariaLabel": "Options counted metric"
+                        },
+                        "children": [
+                          {
+                            "type": "Stack",
+                            "props": {
+                              "gap": 3
+                            },
+                            "children": [
+                              {
+                                "type": "Heading",
+                                "props": {
+                                  "token": "$label-01",
+                                  "text": "Options"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "Heading",
+                                "props": {
+                                  "token": "$heading-04",
+                                  "text": "24"
+                                },
+                                "children": []
+                              },
+                              {
+                                "type": "Tag",
+                                "props": {
+                                  "type": "gray",
+                                  "text": "Filtered"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "Search",
+                "props": {
+                  "id": "flight-filter",
+                  "labelText": "Filter flights",
+                  "placeholder": "Filter by airline or airport",
+                  "size": "md"
+                },
+                "children": []
+              },
+              {
+                "type": "DataTable",
+                "props": {
+                  "ariaLabel": "Flight options table",
+                  "headers": [
+                    {
+                      "key": "airline",
+                      "header": "Airline"
+                    },
+                    {
+                      "key": "route",
+                      "header": "Route"
+                    },
+                    {
+                      "key": "duration",
+                      "header": "Duration"
+                    },
+                    {
+                      "key": "price",
+                      "header": "Price"
+                    }
+                  ],
+                  "rows": [
+                    {
+                      "id": "f1",
+                      "airline": "Example Air",
+                      "route": "SFO \u2192 JFK",
+                      "duration": "5h 45m",
+                      "price": "$389"
+                    },
+                    {
+                      "id": "f2",
+                      "airline": "Sample Jets",
+                      "route": "SFO \u2192 JFK",
+                      "duration": "6h 10m",
+                      "price": "$420"
+                    }
+                  ]
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

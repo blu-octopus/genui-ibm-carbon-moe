@@ -1,0 +1,63 @@
+{
+  "id": "prompt_05_destructive_modal",
+  "root": {
+    "type": "Modal",
+    "props": {
+      "open": true,
+      "danger": true,
+      "modalHeading": "Delete workspace?",
+      "modalLabel": "Destructive action",
+      "ariaLabel": "Confirm workspace deletion",
+      "primaryButtonText": "Delete",
+      "secondaryButtonText": "Cancel",
+      "preventCloseOnClickOutside": true,
+      "shouldSubmitOnEnter": false
+    },
+    "children": [
+      {
+        "type": "ModalBody",
+        "props": {},
+        "children": [
+          {
+            "type": "Stack",
+            "props": {
+              "gap": 5
+            },
+            "children": [
+              {
+                "type": "InlineNotification",
+                "props": {
+                  "kind": "warning",
+                  "title": "This cannot be undone",
+                  "subtitle": "All projects, members, and audit logs in this workspace will be permanently removed.",
+                  "lowContrast": true,
+                  "hideCloseButton": true
+                },
+                "children": []
+              },
+              {
+                "type": "Heading",
+                "props": {
+                  "token": "$body-01",
+                  "text": "Type the workspace name to confirm you understand this action."
+                },
+                "children": []
+              },
+              {
+                "type": "TextInput",
+                "props": {
+                  "id": "confirm-name",
+                  "labelText": "Workspace name",
+                  "placeholder": "production-workspace",
+                  "invalid": false,
+                  "invalidText": "Name does not match"
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
