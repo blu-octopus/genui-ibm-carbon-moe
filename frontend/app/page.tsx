@@ -29,14 +29,22 @@ const SOURCES: { id: SourceId; label: string; resultFile?: string }[] = [
   },
 ];
 
+function sourceFromQuery(): SourceId {
+  if (typeof window === 'undefined') return 'ground_truth';
+  const q = new URLSearchParams(window.location.search).get('source');
+  if (q === 'moe_small' || q === 'baseline_large' || q === 'ground_truth') return q;
+  return 'ground_truth';
+}
+
 export default function Page() {
   const [promptId, setPromptId] = useState(PROMPT_IDS[0]);
-  const [source, setSource] = useState<SourceId>('ground_truth');
+  const [source, setSource] = useState<SourceId>(() => sourceFromQuery());
   const [doc, setDoc] = useState<CarbonDocument | null>(null);
   const [meta, setMeta] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
     setError(null);
     setDoc(null);
     setMeta('');
@@ -45,10 +53,9 @@ export default function Page() {
     const isDashboardCompare =
       promptId === 'prompt_01_travel_dashboard' && source !== 'ground_truth';
 
-    const url =
-      source === 'ground_truth' || !isDashboardCompare
-        ? `/api/ground-truth/${promptId}`
-        : `/api/results/${selected?.resultFile}`;
+    const url = isDashboardCompare
+      ? `/api/results/${selected?.resultFile}`
+      : `/api/ground-truth/${promptId}`;
 
     if (source !== 'ground_truth' && promptId !== 'prompt_01_travel_dashboard') {
       setError(
@@ -56,12 +63,13 @@ export default function Page() {
       );
     }
 
-    fetch(url)
+    fetch(url, { signal: controller.signal })
       .then(async (r) => {
         if (!r.ok) throw new Error(await r.text());
         return r.json();
       })
       .then((data) => {
+        if (controller.signal.aborted) return;
         if (data.document?.root) {
           setDoc(data.document as CarbonDocument);
           setMeta(
@@ -70,12 +78,17 @@ export default function Page() {
           );
         } else if (data.root) {
           setDoc(data as CarbonDocument);
-          setMeta('ground truth');
+          setMeta(source === 'ground_truth' ? 'ground truth' : source);
         } else {
           throw new Error('Response has no Carbon document tree');
         }
       })
-      .catch((e) => setError(String(e)));
+      .catch((e) => {
+        if (controller.signal.aborted || e?.name === 'AbortError') return;
+        setError(String(e));
+      });
+
+    return () => controller.abort();
   }, [promptId, source]);
 
   return (
@@ -106,7 +119,13 @@ export default function Page() {
             <select
               id="source"
               value={source}
-              onChange={(e) => setSource(e.target.value as SourceId)}
+              onChange={(e) => {
+                const next = e.target.value as SourceId;
+                setSource(next);
+                const url = new URL(window.location.href);
+                url.searchParams.set('source', next);
+                window.history.replaceState({}, '', url.toString());
+              }}
             >
               {SOURCES.map((s) => (
                 <option key={s.id} value={s.id}>

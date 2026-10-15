@@ -48,6 +48,22 @@ const MAP: Record<string, ElementType> = {
   DataTable,
 };
 
+/** Carbon leaf controls that must not receive React children (void/input wrappers). */
+const LEAF_NO_CHILDREN = new Set([
+  'TextInput',
+  'TextArea',
+  'DatePickerInput',
+  'Search',
+  'NumberInput',
+  'Checkbox',
+  'Toggle',
+  'Select',
+  'Pagination',
+  'Dropdown',
+  'InlineNotification',
+  'ToastNotification',
+]);
+
 function headingClass(token?: string): string {
   if (!token) return '';
   return `cds--type-${token.replace('$', '').replace(/_/g, '-')}`;
@@ -149,10 +165,15 @@ export function DynamicCarbonRenderer({ node }: { node: CarbonNode }) {
 
   const props = { ...(node.props || {}) };
   delete props.text;
+  const childNodes = node.children || [];
+
+  if (LEAF_NO_CHILDREN.has(node.type) || childNodes.length === 0) {
+    return <Cmp {...props} />;
+  }
 
   return (
     <Cmp {...props}>
-      {(node.children || []).map((child, i) => (
+      {childNodes.map((child, i) => (
         <DynamicCarbonRenderer key={i} node={child} />
       ))}
     </Cmp>
