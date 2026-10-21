@@ -39,7 +39,7 @@ def test_structure_self_distance_zero():
 
 
 def test_synthesizer_emits_carbon_import():
-    doc = CarbonDocument.model_validate(load_ground_truth("prompt_05_destructive_modal"))
+    doc = CarbonDocument.model_validate(load_ground_truth("prompt_04_destructive_modal"))
     tsx = synthesize_tsx(doc)
     assert "@carbon/react" in tsx
     assert "Modal" in tsx
@@ -60,6 +60,6 @@ def test_intent_sensitive_flag():
 
 
 def test_static_wcag_on_form():
-    doc = CarbonDocument.model_validate(load_ground_truth("prompt_03_registration_form"))
+    doc = CarbonDocument.model_validate(load_ground_truth("prompt_02_registration_form"))
     result = static_wcag_heuristic(doc)
     assert result["static_violation_count"] == 0

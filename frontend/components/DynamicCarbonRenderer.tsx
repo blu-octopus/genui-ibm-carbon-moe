@@ -12,6 +12,7 @@ import {
   Grid,
   Heading,
   InlineNotification,
+  Link,
   Modal,
   Pagination,
   ProgressIndicator,
@@ -46,6 +47,7 @@ const MAP: Record<string, ElementType> = {
   Tooltip,
   Heading,
   DataTable,
+  Link,
 };
 
 /** Carbon leaf controls that must not receive React children (void/input wrappers). */
@@ -83,6 +85,15 @@ export function DynamicCarbonRenderer({ node }: { node: CarbonNode }) {
   if (node.type === 'Button') {
     const { text, ...rest } = node.props || {};
     return <Button {...rest}>{String(text ?? 'Button')}</Button>;
+  }
+
+  if (node.type === 'Link') {
+    const { childrenText, href, ...rest } = node.props || {};
+    return (
+      <Link href={String(href ?? '#')} {...rest}>
+        {String(childrenText ?? rest.children ?? 'Link')}
+      </Link>
+    );
   }
 
   if (node.type === 'Tag') {

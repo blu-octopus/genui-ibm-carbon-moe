@@ -105,10 +105,11 @@ def cmd_run_moe(args: argparse.Namespace) -> None:
 
 def cmd_run_baseline(args: argparse.Namespace) -> None:
     prompt = next(p for p in load_prompts() if p["id"] == args.prompt_id)
+    context = getattr(args, "context", "allowlist")
     if args.provider == "mistral":
-        result = run_mistral_baseline(prompt["id"], prompt["text"])
+        result = run_mistral_baseline(prompt["id"], prompt["text"], context=context)
     else:
-        result = run_gpt4o_baseline(prompt["id"], prompt["text"])
+        result = run_gpt4o_baseline(prompt["id"], prompt["text"], context=context)
     out_path = _result_path(result["system"], args.prompt_id, result.get("model"))
     out_path.write_text(json.dumps(result, indent=2), encoding="utf-8")
     print(f"wrote {out_path}")
@@ -188,6 +189,12 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("run-baseline", help="Run unconstrained baseline")
     s.add_argument("--prompt-id", required=True)
     s.add_argument("--provider", choices=["mistral", "gpt4o"], required=True)
+    s.add_argument(
+        "--context",
+        choices=["none", "allowlist", "design"],
+        default="allowlist",
+        help="none=short prompt only; allowlist=compact tokens; design=full data/design.md saturation",
+    )
     s.set_defaults(func=cmd_run_baseline)
 
     s = sub.add_parser("grade", help="Grade a saved result JSON against ground truth")

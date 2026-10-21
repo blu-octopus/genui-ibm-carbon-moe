@@ -2,7 +2,15 @@
 
 Canonical prompt set and run methodology for the `genui-ibm-carbon-moe` Agentic MoE vs. unconstrained baseline evaluation (CS 8903 / Prof. Madisetti). Use this document when assembling control and treatment runs so results stay academically rigorous and reproducible.
 
-Harness IDs currently wired in [`prompts.json`](prompts.json) may differ until a later sync pass. Prefer the exact prompt wording below for paper-facing experiments.
+Harness IDs in [`prompts.json`](prompts.json) match this document:
+
+1. `prompt_01_enterprise_table`
+2. `prompt_02_registration_form`
+3. `prompt_03_kpi_grid`
+4. `prompt_04_destructive_modal`
+5. `prompt_05_global_shell`
+
+Control saturation document: [`data/design.md`](../design.md).
 
 ---
 

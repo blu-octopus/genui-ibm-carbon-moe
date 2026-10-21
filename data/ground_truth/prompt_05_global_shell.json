@@ -1,0 +1,130 @@
+{
+  "id": "prompt_05_global_shell",
+  "root": {
+    "type": "Grid",
+    "props": {
+      "fullWidth": true,
+      "ariaLabel": "System monitoring dashboard shell"
+    },
+    "children": [
+      {
+        "type": "Column",
+        "props": { "sm": 4, "md": 2, "lg": 3 },
+        "children": [
+          {
+            "type": "Stack",
+            "props": { "gap": 5 },
+            "children": [
+              {
+                "type": "Heading",
+                "props": { "token": "$heading-03", "text": "Monitor" },
+                "children": []
+              },
+              {
+                "type": "Link",
+                "props": { "href": "#", "childrenText": "Overview" },
+                "children": []
+              },
+              {
+                "type": "Link",
+                "props": { "href": "#", "childrenText": "Services" },
+                "children": []
+              },
+              {
+                "type": "Link",
+                "props": { "href": "#", "childrenText": "Alerts" },
+                "children": []
+              },
+              {
+                "type": "Link",
+                "props": { "href": "#", "childrenText": "Settings" },
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Column",
+        "props": { "sm": 4, "md": 6, "lg": 13 },
+        "children": [
+          {
+            "type": "Stack",
+            "props": { "gap": 5 },
+            "children": [
+              {
+                "type": "Grid",
+                "props": {},
+                "children": [
+                  {
+                    "type": "Column",
+                    "props": { "sm": 2, "md": 4, "lg": 8 },
+                    "children": [
+                      {
+                        "type": "Heading",
+                        "props": { "token": "$heading-02", "text": "Acme Monitor" },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Column",
+                    "props": { "sm": 2, "md": 4, "lg": 8 },
+                    "children": [
+                      {
+                        "type": "Stack",
+                        "props": { "gap": 3, "orientation": "horizontal" },
+                        "children": [
+                          {
+                            "type": "Button",
+                            "props": {
+                              "kind": "ghost",
+                              "text": "Notifications",
+                              "ariaLabel": "Open notifications"
+                            },
+                            "children": []
+                          },
+                          {
+                            "type": "Button",
+                            "props": {
+                              "kind": "ghost",
+                              "text": "Profile",
+                              "ariaLabel": "Open user profile"
+                            },
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "Heading",
+                "props": {
+                  "token": "$label-01",
+                  "text": "Home / Monitoring / Overview"
+                },
+                "children": []
+              },
+              {
+                "type": "Tile",
+                "props": { "ariaLabel": "Main content area" },
+                "children": [
+                  {
+                    "type": "Heading",
+                    "props": {
+                      "token": "$body-01",
+                      "text": "Main content"
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

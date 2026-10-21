@@ -25,11 +25,15 @@ npm run dev
 ```bash
 python -m src.main synthesize-gt
 python -m src.main grade-gt
-python -m src.main run-moe --prompt-id prompt_01_travel_dashboard --dry-run
-python -m src.main run-moe --prompt-id prompt_01_travel_dashboard
-python -m src.main run-baseline --provider mistral --prompt-id prompt_01_travel_dashboard
-python -m src.main run-baseline --provider gpt4o --prompt-id prompt_01_travel_dashboard
+python -m src.main run-moe --prompt-id prompt_01_enterprise_table --dry-run
+python -m src.main run-moe --prompt-id prompt_01_enterprise_table
+python -m src.main run-baseline --provider mistral --prompt-id prompt_01_enterprise_table
+python -m src.main run-baseline --provider mistral --prompt-id prompt_01_enterprise_table --context design
+python -m src.main run-baseline --provider gpt4o --prompt-id prompt_01_enterprise_table
+python scripts/run_bench_matrix.py   # all 5 prompts x baseline/design.md/MoE
 ```
+
+Prompts: `data/prompts/prompts.md` + `prompts.json`. Design saturation doc: `data/design.md`.
 
 ## API keys
 

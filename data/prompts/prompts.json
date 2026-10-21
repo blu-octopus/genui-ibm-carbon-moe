@@ -1,29 +1,29 @@
 {
   "prompts": [
     {
-      "id": "prompt_01_travel_dashboard",
-      "title": "Travel comparison dashboard",
-      "text": "Create a responsive travel comparison dashboard with a date picker, metric cards summarizing price and duration, and a filterable data table of flight options. Use only IBM Carbon components and design tokens. Support desktop and mobile breakpoints."
+      "id": "prompt_01_enterprise_table",
+      "title": "Enterprise data table",
+      "text": "Create a React data table for managing enterprise users. It needs columns for User Name, Role, Account Status, and Last Login. Include a checkbox column on the far left for batch selection. At the top right above the table, add a search input field. At the bottom, include a pagination component displaying '1-10 of 100 items'. The 'Status' column should use colored tag components (e.g., Active, Pending, Suspended)."
     },
     {
-      "id": "prompt_02_inventory_table",
-      "title": "Enterprise inventory table",
-      "text": "Generate a data-dense inventory table with pagination, batch actions, and status tag badges for stock state. Use only IBM Carbon DataTable patterns and tokens. Keep the layout usable at 1440px and 375px."
+      "id": "prompt_02_registration_form",
+      "title": "Multi-step registration form with validation",
+      "text": "Build a two-column registration form for a new cloud tenant. The fields should include Company Name, Admin Email, Password, and a dropdown select menu for Industry. Include inline validation error messages under the Email and Password fields showing an invalid state. At the bottom right, place a secondary 'Cancel' button and a primary 'Create Account' button."
     },
     {
-      "id": "prompt_03_registration_form",
-      "title": "Multi-step registration form",
-      "text": "Build a multi-step user registration form with validation feedback, inline tooltips, and primary/secondary button controls. Use IBM Carbon Form, ProgressIndicator, TextInput, and Button. No custom CSS colors or pixel spacing."
+      "id": "prompt_03_kpi_grid",
+      "title": "Analytics KPI overview card grid",
+      "text": "Design a responsive dashboard widget containing four KPI cards arranged in a grid. Each card displays a top-left title (e.g., 'Total Revenue'), a large numeric value in the center, and a small percentage indicator at the bottom (green for an upward trend, red for a downward trend) next to an arrow icon. The grid should display 4 columns on desktop screens and 1 column on mobile."
     },
     {
-      "id": "prompt_04_kpi_grid",
-      "title": "Executive KPI card grid",
-      "text": "Design an executive KPI card grid with trend indicators, dropdown filters, and accessible icon labels. Use Carbon Tile, Tag, Dropdown, and Grid/Column responsive props only."
+      "id": "prompt_04_destructive_modal",
+      "title": "Destructive action confirmation modal",
+      "text": "Create a modal dialog asking the user to confirm the deletion of a database cluster. The modal must have a prominent red warning header. The body text should explain the action is irreversible and include a text input field requiring the user to type the exact cluster name to enable confirmation. Include two buttons at the bottom: a secondary 'Cancel' button and a disabled danger 'Delete Cluster' button."
     },
     {
-      "id": "prompt_05_destructive_modal",
-      "title": "Destructive confirmation modal",
-      "text": "Synthesize a destructive action confirmation modal with clear messaging, a warning callout/notification, and focus-trapped primary danger and secondary cancel actions. Use IBM Carbon Modal and InlineNotification only—no hallucinated styles."
+      "id": "prompt_05_global_shell",
+      "title": "High-level global shell and navigation",
+      "text": "Build the top-level shell for a system monitoring dashboard. It should feature a collapsible left-hand side navigation menu containing 4 link items. The main content area should have a global top header containing a logo placeholder on the left, and a user profile avatar with a notification bell icon on the right. Below the top header, include a blank main content area with a 3-tier breadcrumb trail at the top."
     }
   ]
 }

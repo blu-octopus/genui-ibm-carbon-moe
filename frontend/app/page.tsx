@@ -6,42 +6,65 @@ import { DynamicCarbonRenderer } from '../components/DynamicCarbonRenderer';
 import type { CarbonDocument } from '../components/types';
 
 const PROMPT_IDS = [
-  'prompt_01_travel_dashboard',
-  'prompt_02_inventory_table',
-  'prompt_03_registration_form',
-  'prompt_04_kpi_grid',
-  'prompt_05_destructive_modal',
+  'prompt_01_enterprise_table',
+  'prompt_02_registration_form',
+  'prompt_03_kpi_grid',
+  'prompt_04_destructive_modal',
+  'prompt_05_global_shell',
 ];
 
-type SourceId = 'ground_truth' | 'moe_small' | 'baseline_large';
+type SourceId = 'ground_truth' | 'moe' | 'baseline' | 'design_md';
 
-const SOURCES: { id: SourceId; label: string; resultFile?: string }[] = [
-  { id: 'ground_truth', label: 'Ground truth' },
-  {
-    id: 'moe_small',
-    label: 'MoE / mistral-small-latest',
-    resultFile: 'moe_mistral_mistral-small-latest_prompt_01_travel_dashboard.json',
-  },
-  {
-    id: 'baseline_large',
-    label: 'Baseline / mistral-large-latest',
-    resultFile: 'baseline_mistral_mistral-large-latest_prompt_01_travel_dashboard.json',
-  },
+const SOURCES: { id: SourceId; label: string }[] = [
+  { id: 'ground_truth', label: 'Ground truth (human)' },
+  { id: 'moe', label: 'MoE / mistral-small-latest' },
+  { id: 'baseline', label: 'Baseline unconstrained / mistral' },
+  { id: 'design_md', label: 'Baseline + design.md / mistral' },
 ];
+
+function resultFilename(source: SourceId, promptId: string): string | null {
+  if (source === 'moe') {
+    return `moe_mistral_mistral-small-latest_${promptId}.json`;
+  }
+  if (source === 'baseline') {
+    return `baseline_mistral_mistral-small-latest_${promptId}.json`;
+  }
+  if (source === 'design_md') {
+    return `baseline_mistral_design_md_mistral-small-latest_${promptId}.json`;
+  }
+  return null;
+}
 
 function sourceFromQuery(): SourceId {
   if (typeof window === 'undefined') return 'ground_truth';
   const q = new URLSearchParams(window.location.search).get('source');
-  if (q === 'moe_small' || q === 'baseline_large' || q === 'ground_truth') return q;
+  if (q === 'moe' || q === 'baseline' || q === 'design_md' || q === 'ground_truth') {
+    return q;
+  }
+  // legacy aliases
+  if (q === 'moe_small') return 'moe';
+  if (q === 'baseline_large') return 'baseline';
   return 'ground_truth';
+}
+
+function promptFromQuery(): string {
+  if (typeof window === 'undefined') return PROMPT_IDS[0];
+  const q = new URLSearchParams(window.location.search).get('prompt');
+  if (q && PROMPT_IDS.includes(q)) return q;
+  return PROMPT_IDS[0];
 }
 
 export default function Page() {
   const [promptId, setPromptId] = useState(PROMPT_IDS[0]);
-  const [source, setSource] = useState<SourceId>(() => sourceFromQuery());
+  const [source, setSource] = useState<SourceId>('ground_truth');
   const [doc, setDoc] = useState<CarbonDocument | null>(null);
   const [meta, setMeta] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setPromptId(promptFromQuery());
+    setSource(sourceFromQuery());
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -49,19 +72,11 @@ export default function Page() {
     setDoc(null);
     setMeta('');
 
-    const selected = SOURCES.find((s) => s.id === source);
-    const isDashboardCompare =
-      promptId === 'prompt_01_travel_dashboard' && source !== 'ground_truth';
-
-    const url = isDashboardCompare
-      ? `/api/results/${selected?.resultFile}`
-      : `/api/ground-truth/${promptId}`;
-
-    if (source !== 'ground_truth' && promptId !== 'prompt_01_travel_dashboard') {
-      setError(
-        'MoE/baseline compare sources are available for prompt_01_travel_dashboard only. Showing ground truth instead.',
-      );
-    }
+    const file = resultFilename(source, promptId);
+    const url =
+      source === 'ground_truth' || !file
+        ? `/api/ground-truth/${promptId}`
+        : `/api/results/${file}`;
 
     fetch(url, { signal: controller.signal })
       .then(async (r) => {
@@ -74,7 +89,7 @@ export default function Page() {
           setDoc(data.document as CarbonDocument);
           setMeta(
             [data.system, data.model, data.filename].filter(Boolean).join(' · ') ||
-              'ground truth',
+              source,
           );
         } else if (data.root) {
           setDoc(data as CarbonDocument);
@@ -91,6 +106,13 @@ export default function Page() {
     return () => controller.abort();
   }, [promptId, source]);
 
+  function updateQuery(nextPrompt: string, nextSource: SourceId) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('prompt', nextPrompt);
+    url.searchParams.set('source', nextSource);
+    window.history.replaceState({}, '', url.toString());
+  }
+
   return (
     <>
       <Header aria-label="Carbon MoE">
@@ -105,7 +127,11 @@ export default function Page() {
             <select
               id="prompt"
               value={promptId}
-              onChange={(e) => setPromptId(e.target.value)}
+              onChange={(e) => {
+                const next = e.target.value;
+                setPromptId(next);
+                updateQuery(next, source);
+              }}
             >
               {PROMPT_IDS.map((id) => (
                 <option key={id} value={id}>
@@ -122,9 +148,7 @@ export default function Page() {
               onChange={(e) => {
                 const next = e.target.value as SourceId;
                 setSource(next);
-                const url = new URL(window.location.href);
-                url.searchParams.set('source', next);
-                window.history.replaceState({}, '', url.toString());
+                updateQuery(promptId, next);
               }}
             >
               {SOURCES.map((s) => (

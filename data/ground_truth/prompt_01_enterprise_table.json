@@ -1,0 +1,126 @@
+{
+  "id": "prompt_01_enterprise_table",
+  "root": {
+    "type": "Grid",
+    "props": {
+      "fullWidth": true,
+      "ariaLabel": "Inventory management"
+    },
+    "children": [
+      {
+        "type": "Column",
+        "props": {
+          "sm": 4,
+          "md": 8,
+          "lg": 16
+        },
+        "children": [
+          {
+            "type": "Stack",
+            "props": {
+              "gap": 5
+            },
+            "children": [
+              {
+                "type": "Heading",
+                "props": {
+                  "token": "$heading-03",
+                  "text": "Enterprise users"
+                },
+                "children": []
+              },
+              {
+                "type": "DataTable",
+                "props": {
+                  "ariaLabel": "Enterprise users table with batch selection",
+                  "useZebraStyles": true,
+                  "headers": [
+                    {
+                      "key": "name",
+                      "header": "User Name"
+                    },
+                    {
+                      "key": "role",
+                      "header": "Role"
+                    },
+                    {
+                      "key": "status",
+                      "header": "Account Status"
+                    },
+                    {
+                      "key": "lastLogin",
+                      "header": "Last Login"
+                    }
+                  ],
+                  "rows": [
+                    {
+                      "id": "1",
+                      "name": "Alex Kim",
+                      "role": "Admin",
+                      "status": "Active",
+                      "lastLogin": "2026-10-01"
+                    },
+                    {
+                      "id": "2",
+                      "name": "Jordan Lee",
+                      "role": "Editor",
+                      "status": "Pending",
+                      "lastLogin": "2026-09-28"
+                    },
+                    {
+                      "id": "3",
+                      "name": "Sam Rivera",
+                      "role": "Viewer",
+                      "status": "Suspended",
+                      "lastLogin": "2026-08-12"
+                    }
+                  ],
+                  "batchActions": [
+                    {
+                      "label": "Export",
+                      "kind": "primary"
+                    },
+                    {
+                      "label": "Archive",
+                      "kind": "danger--ghost"
+                    }
+                  ],
+                  "rowTags": {
+                    "i1": {
+                      "type": "green",
+                      "text": "In stock"
+                    },
+                    "i2": {
+                      "type": "warm-gray",
+                      "text": "Low"
+                    },
+                    "i3": {
+                      "type": "red",
+                      "text": "Backorder"
+                    }
+                  }
+                },
+                "children": []
+              },
+              {
+                "type": "Pagination",
+                "props": {
+                  "page": 1,
+                  "pageSize": 10,
+                  "totalItems": 3,
+                  "pageSizes": [
+                    10,
+                    20,
+                    50
+                  ],
+                  "ariaLabel": "Inventory pagination"
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
